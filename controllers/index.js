@@ -1,4 +1,6 @@
 const Bootcamp = require('../models/Bootcamp');
+const asyncHandler = require('../middlewares/async');
+const ErrorResponse = require('../utils/errorResponse');
 //create diffrent methods
 //@desc get all bootcamp
 //@route Get /api/v1/bootcamps
@@ -11,7 +13,8 @@ exports.getBootcamps = async (req, res, next) => {
       data: data,
     });
   } catch (e) {
-    console.log(e);
+    //console.log(e);
+    next(new ErrorResponse(e.message, e.statusCode));
   }
 };
 
@@ -28,7 +31,8 @@ exports.getBootcamp = async (req, res, next) => {
       data: data,
     });
   } catch (e) {
-    console.log(e);
+    //  console.log(e);
+    next(new ErrorResponse(e, e.statusCode));
   }
 };
 
@@ -65,9 +69,11 @@ exports.updateBootcamps = async (req, res, next) => {
 //@access Private
 exports.deleteBootcamps = async (req, res, next) => {
   try {
-    const data = await Bootcamp.deleteOne({ _id: req.params.id });
+    const data = await Bootcamp.deleteOne({ id: req.params.id });
+
     return res.status(200).json({ data: data });
   } catch (e) {
     console.log(e);
+    // next(e);
   }
 };

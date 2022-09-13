@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 const Bootcampschema = new mongoose.Schema({
   name: {
     type: String,
@@ -59,6 +60,7 @@ const Bootcampschema = new mongoose.Schema({
       'Web Development',
       'Data Science',
       'Business',
+      'UI/UX',
       'Others',
     ],
   },
@@ -92,6 +94,15 @@ const Bootcampschema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+//create bootacamp slug from schema
+//pre gona run before operation or save;
+
+Bootcampschema.pre('save', function (next) {
+  console.log('slugify', this.name);
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 module.exports = mongoose.model('Bootcamp', Bootcampschema);
