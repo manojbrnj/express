@@ -1,38 +1,73 @@
+const Bootcamp = require('../models/Bootcamp');
 //create diffrent methods
 //@desc get all bootcamp
 //@route Get /api/v1/bootcamps
 //@access Public
-exports.getBootcamps = (req, res, next) => {
-  res.status(200).json({ data: 'show all boootcamps' });
+exports.getBootcamps = async (req, res, next) => {
+  try {
+    const data = await Bootcamp.find();
+    return res.status(200).json({
+      success: true,
+      data: data,
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 //create diffrent methods
 //@desc get all bootcamp
 //@route Get /api/v1/bootcamps
 //@access Public
-exports.getBootcamp = (req, res, next) => {
-  res.status(200).json({ data: `bootcamp get boootcamps ${req.params.id}` });
+exports.getBootcamp = async (req, res, next) => {
+  try {
+    console.log(req._parsedUrl.query);
+    const data = await Bootcamp.findById(req.params.id);
+    return res.status(200).json({
+      success: true,
+      data: data,
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 //create diffrent methods
 //@desc create new bootcamp
 //@route post /api/v1/bootcamps
 //@access Private
-exports.createBootcamps = (req, res, next) => {
-  res.status(200).json({ data: `bootcamp created boootcamps` });
+exports.createBootcamps = async (req, res, next) => {
+  try {
+    const data = await Bootcamp.create(req.body);
+    return res.status(200).json({ data: data });
+  } catch (e) {
+    console.log(e);
+  }
 };
 //create diffrent methods
 //@desc create new bootcamp
 //@route post /api/v1/bootcamps
 //@access Private
-exports.updateBootcamps = (req, res, next) => {
-  res.status(200).json({ data: `bootcamp update boootcamps ${req.params.id}` });
+exports.updateBootcamps = async (req, res, next) => {
+  try {
+    const data = await Bootcamp.findById(req.params.id);
+    data.name = req.body.name;
+    await data.save();
+    return res.status(200).json({ data: data });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 //create diffrent methods
 //@desc create new bootcamp
 //@route post /api/v1/bootcamps
 //@access Private
-exports.deleteBootcamps = (req, res, next) => {
-  res.status(200).json({ data: `bootcamp delted boootcamps ${req.params.id}` });
+exports.deleteBootcamps = async (req, res, next) => {
+  try {
+    const data = await Bootcamp.deleteOne({ _id: req.params.id });
+    return res.status(200).json({ data: data });
+  } catch (e) {
+    console.log(e);
+  }
 };
